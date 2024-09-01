@@ -1,0 +1,53 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: spark-datamart-on-k8s-from-airflow
+  namespace: default
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: spark-s3:1.0.7
+  imagePullPolicy: IfNotPresent
+  mainApplicationFile: local:///app/main.py
+  sparkVersion: 3.5.0
+  driver:
+    labels:
+      version: 3.5.0
+    cores: 1
+    coreLimit: 1200m
+    memory: 512m
+    serviceAccount: spark-operator-spark
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: aws-secrets
+            key: AWS_ACCESS_KEY_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: aws-secrets
+            key: AWS_SECRET_ACCESS_KEY
+      - name: AWS_ENDPOINT
+        value: "minio-1724606825:9000"
+  executor:
+    labels:
+      version: 3.5.0
+    instances: 2
+    cores: 1
+    coreLimit: 1200m
+    memory: 512m
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: aws-secrets
+            key: AWS_ACCESS_KEY_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: aws-secrets
+            key: AWS_SECRET_ACCESS_KEY
+      - name: AWS_ENDPOINT
+        value: "minio-1724606825:9000"
