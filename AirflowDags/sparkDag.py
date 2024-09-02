@@ -19,7 +19,7 @@ with DAG(
         namespace="default",
         application_file="spark-deployment.yaml",
         do_xcom_push=True,
-        params={"app_name": "spark-datamart-k8s-from-airflow"} 
+        params={"app_name": "spark-datamart-k8s-from-airflow-v2"} 
     )
 
     submit_sensor = SparkKubernetesSensor(
