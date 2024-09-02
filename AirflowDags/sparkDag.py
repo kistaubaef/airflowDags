@@ -16,7 +16,7 @@ with DAG(
 ) as dag:
     submit = SparkKubernetesOperator(
         task_id="submit",
-        namespace="default",
+        namespace="airflow",
         application_file="spark-deployment.yaml",
         do_xcom_push=True,
         params={"app_name": "spark-datamart-k8s-from-airflow-v2"} 
@@ -24,7 +24,7 @@ with DAG(
 
     submit_sensor = SparkKubernetesSensor(
         task_id="submit_sensor",
-        namespace="default",
+        namespace="airflow",
         application_name="{{ task_instance.xcom_pull(task_ids='submit')['metadata']['name'] }}",
         attach_log=True,
     )
