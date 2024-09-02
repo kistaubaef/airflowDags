@@ -9,7 +9,7 @@ from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import (
 )
 
 with DAG(
-    dag_id="spark_kubernetes_dag",
+    dag_id="spark_kubernetes_dag_2",
     schedule=None,
     start_date=datetime(2024, 9, 1),
     catchup=False
